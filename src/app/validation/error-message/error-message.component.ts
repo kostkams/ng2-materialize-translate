@@ -42,18 +42,19 @@ export class MzErrorMessageComponent implements OnDestroy, OnInit {
 
   controlStatusChangesSubscription: Subscription;
   errorMessage = '';
+  langChanged: Subscription;
 
   constructor(private translator: TranslateService) { }
 
   ngOnInit() {
     this.buildErrorMessage();
     this.controlStatusChangesSubscription = this.control.statusChanges.subscribe(() => this.buildErrorMessage());
-    this.translator.onLangChange.subscribe(event => { this.buildErrorMessage(); });
+    this.langChanged = this.translator.onLangChange.subscribe(event => { this.buildErrorMessage(); });
   }
 
   ngOnDestroy(): void {
     this.controlStatusChangesSubscription.unsubscribe();
-    this.translator.onLangChange.unsubscribe();
+    this.langChanged.unsubscribe();
   }
 
   buildErrorMessage() {
